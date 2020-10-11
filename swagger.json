@@ -1,0 +1,533 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"Company": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"licenseId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"_id",
+					"name",
+					"licenseId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Company.name-or-licenseId_": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"licenseId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"licenseId"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"CompanyCreationRequest": {
+				"$ref": "#/components/schemas/Pick_Company.name-or-licenseId_"
+			},
+			"CompanyUpdateRequest": {
+				"$ref": "#/components/schemas/Pick_Company.name-or-licenseId_"
+			},
+			"License": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"licenseType": {
+						"type": "string"
+					},
+					"code": {
+						"type": "string"
+					},
+					"numberOfUsers": {
+						"type": "number",
+						"format": "double"
+					},
+					"activationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"expirationDate": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"_id",
+					"licenseType",
+					"code",
+					"numberOfUsers",
+					"activationDate",
+					"expirationDate"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_License.licenseType-or-code-or-numberOfUsers-or-activationDate-or-expirationDate_": {
+				"properties": {
+					"licenseType": {
+						"type": "string"
+					},
+					"code": {
+						"type": "string"
+					},
+					"numberOfUsers": {
+						"type": "number",
+						"format": "double"
+					},
+					"activationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"expirationDate": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"licenseType",
+					"code",
+					"numberOfUsers",
+					"activationDate",
+					"expirationDate"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"LicenseCreationRequest": {
+				"$ref": "#/components/schemas/Pick_License.licenseType-or-code-or-numberOfUsers-or-activationDate-or-expirationDate_"
+			},
+			"LicenseUpdateRequest": {
+				"$ref": "#/components/schemas/Pick_License.licenseType-or-code-or-numberOfUsers-or-activationDate-or-expirationDate_"
+			},
+			"User": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string"
+					},
+					"username": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"passwordHash": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"companyId": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"_id",
+					"role",
+					"username",
+					"firstName",
+					"lastName",
+					"passwordHash",
+					"email",
+					"companyId",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status_": {
+				"properties": {
+					"role": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"companyId": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"role",
+					"firstName",
+					"lastName",
+					"email",
+					"companyId",
+					"status"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"UserCreationRequest": {
+				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status_"
+			},
+			"UserUpdateRequest": {
+				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status_"
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "circal-api-server",
+		"version": "1.0.0",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/company/all": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Company"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/company": {
+			"get": {
+				"operationId": "GetByCompanyName",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Company"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "name",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CompanyCreationRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/company/{id}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CompanyUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Remove",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/license/all": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/License"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/license/student": {
+			"get": {
+				"operationId": "GetAllStudentLicences",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/License"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/license": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/License"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LicenseCreationRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/license/{id}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LicenseUpdateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/all": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/User"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/user": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserCreationRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/{id}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserUpdateRequest"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
