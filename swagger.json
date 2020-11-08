@@ -201,6 +201,72 @@
 			},
 			"UserUpdateRequest": {
 				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status_"
+			},
+			"UserAccountLinks": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "string"
+					},
+					"accountType": {
+						"type": "string"
+					},
+					"token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"_id",
+					"userId",
+					"accountType",
+					"token"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_UserAccountLinks.userId-or-accountType-or-token_": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"accountType": {
+						"type": "string"
+					},
+					"token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userId",
+					"accountType",
+					"token"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"UserAccountLinksCreationRequest": {
+				"$ref": "#/components/schemas/Pick_UserAccountLinks.userId-or-accountType-or-token_"
+			},
+			"Pick_UserAccountLinks.userId-or-accountType_": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"accountType": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userId",
+					"accountType"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"UserAccountLinksUpdateRequest": {
+				"$ref": "#/components/schemas/Pick_UserAccountLinks.userId-or-accountType_"
 			}
 		},
 		"securitySchemes": {}
@@ -494,6 +560,25 @@
 			}
 		},
 		"/user/{id}": {
+			"delete": {
+				"operationId": "Remove",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
 			"put": {
 				"operationId": "Update",
 				"responses": {
@@ -518,6 +603,88 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/UserUpdateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/useraccountlinks/all": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/License"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/useraccountlinks": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserAccountLinks"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserAccountLinksCreationRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/useraccountlinks/{id}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserAccountLinksUpdateRequest"
 							}
 						}
 					}
