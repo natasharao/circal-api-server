@@ -48,6 +48,92 @@
 			"CompanyUpdateRequest": {
 				"$ref": "#/components/schemas/Pick_Company.name-or-licenseId_"
 			},
+			"Event": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"startTime": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"endTime": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"preMeetingAgenda": {
+						"type": "string"
+					},
+					"attendingUsers": {
+						"type": "string"
+					},
+					"recurring": {
+						"type": "boolean"
+					},
+					"done": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"_id",
+					"title",
+					"startTime",
+					"endTime",
+					"preMeetingAgenda",
+					"attendingUsers",
+					"recurring",
+					"done"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Event.title-or-startTime-or-endTime-or-preMeetingAgenda-or-attendingUsers-or-recurring-or-done_": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"startTime": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"endTime": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"preMeetingAgenda": {
+						"type": "string"
+					},
+					"attendingUsers": {
+						"type": "string"
+					},
+					"recurring": {
+						"type": "boolean"
+					},
+					"done": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"title",
+					"startTime",
+					"endTime",
+					"preMeetingAgenda",
+					"attendingUsers",
+					"recurring",
+					"done"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"EventCreationRequest": {
+				"$ref": "#/components/schemas/Pick_Event.title-or-startTime-or-endTime-or-preMeetingAgenda-or-attendingUsers-or-recurring-or-done_"
+			},
+			"EventUpdateRequest": {
+				"$ref": "#/components/schemas/Pick_Event.title-or-startTime-or-endTime-or-preMeetingAgenda-or-attendingUsers-or-recurring-or-done_"
+			},
 			"License": {
 				"properties": {
 					"_id": {
@@ -148,6 +234,9 @@
 					},
 					"status": {
 						"type": "string"
+					},
+					"calendar": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -159,12 +248,13 @@
 					"passwordHash",
 					"email",
 					"companyId",
-					"status"
+					"status",
+					"calendar"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status_": {
+			"Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_": {
 				"properties": {
 					"role": {
 						"type": "string"
@@ -183,6 +273,9 @@
 					},
 					"status": {
 						"type": "string"
+					},
+					"calendar": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -191,16 +284,17 @@
 					"lastName",
 					"email",
 					"companyId",
-					"status"
+					"status",
+					"calendar"
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
 			"UserCreationRequest": {
-				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status_"
+				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_"
 			},
 			"UserUpdateRequest": {
-				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status_"
+				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_"
 			},
 			"UserAccountLinks": {
 				"properties": {
@@ -404,6 +498,133 @@
 				]
 			}
 		},
+		"/event/all": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Event"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/event/{id}": {
+			"get": {
+				"operationId": "GetById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Event"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "Remove",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EventUpdateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/event": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Event"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EventCreationRequest"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/license/all": {
 			"get": {
 				"operationId": "GetAll",
@@ -530,9 +751,9 @@
 				"parameters": []
 			}
 		},
-		"/user": {
-			"post": {
-				"operationId": "Create",
+		"/user/{id}": {
+			"get": {
+				"operationId": "GetById",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -546,20 +767,17 @@
 					}
 				},
 				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UserCreationRequest"
-							}
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
 						}
 					}
-				}
-			}
-		},
-		"/user/{id}": {
+				]
+			},
 			"delete": {
 				"operationId": "Remove",
 				"responses": {
@@ -603,6 +821,35 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/UserUpdateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserCreationRequest"
 							}
 						}
 					}

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, {Types} from 'mongoose';
 
 interface Company {
     _id: string;
@@ -25,14 +25,7 @@ interface User {
     email: string;
     companyId: string;
     status: string; // invited, active, inactive
-    calendar: [string];
-}
-
-interface UserAccountLinks {
-    _id: string;
-    userId: string;
-    accountType: string; //google, outlook, facebook
-    token: string; //access token from the providers
+    calendar: string; /** should be array of strings -- see if any issues**/
 }
 
 interface Event {
@@ -40,10 +33,19 @@ interface Event {
     title: string;
     startTime: Date;
     endTime: Date;
-    preMeetingAgenda: string; 
-    attendingUsers: [string]; // TODO make list of strings
+    preMeetingAgenda: string;
+    attendingUsers: string; /** should be array of strings -- see if any issues**/
     recurring: boolean;
     done: boolean;
+    cancelled: boolean;
+    status: string; // upcoming, inprog, done, cancelled
+}
+
+interface UserAccountLinks {
+    _id: string;
+    userId: string;
+    accountType: string; //google, outlook, facebook
+    token: string; //access token from the providers
 }
 
 
@@ -74,9 +76,10 @@ const EventSchema = new mongoose.Schema({
     startTime: Date,
     endTime: Date,
     preMeetingAgenda: String,
-    attendingUsers: [String],
+    attendingUsers: { type: [String], index: true },
     recurring: Boolean,
-    done: Boolean
+    done: Boolean,
+    cancelled: Boolean
 });
 
 const UserSchema = new mongoose.Schema({

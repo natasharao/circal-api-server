@@ -1,8 +1,8 @@
 import { EventModel, Event } from '../database/dbobjects';
 import { Controller, Route, Get, Post, Body, Put, Delete } from 'tsoa';
 
-export type EventCreationRequest = Pick<Event, "title" | "startTime" | "endTime" | "preMeetingAgenda" | "attendingUsers" | "recurring" | "done">;
-export type EventUpdateRequest = Pick<Event, "title" | "startTime" | "endTime" | "preMeetingAgenda" | "attendingUsers" | "recurring" | "done">;
+export type EventCreationRequest = Pick<Event, "title" | "startTime" | "endTime" | "preMeetingAgenda" | "attendingUsers" | "recurring" | "done" | "cancelled">;
+export type EventUpdateRequest = Pick<Event, "title" | "startTime" | "endTime" | "preMeetingAgenda" | "attendingUsers" | "recurring" | "done" | "cancelled">;
 
 @Route('/event')
 export class EventController extends Controller {
@@ -13,7 +13,7 @@ export class EventController extends Controller {
 				let itemsFound: any = await EventModel.find({});
                 let items: Event[] = itemsFound.map((item : any) => { return {_id: item._id, title: item.title, startTime: item.startTime, 
 																	endTime: item.endTime, preMeetingAgenda: item.preMeetingAgenda, attendingUsers: item.attendingUsers, 
-                                                                    recurring: item.recurring, done: item.done}});
+                                                                    recurring: item.recurring, done: item.done, cancelled: item.cancelled}});
 				resolve(items);
 			} catch (err) {
 				this.setStatus(500);
@@ -38,9 +38,9 @@ export class EventController extends Controller {
 			//another way to save and check for errors while saving
 			await item.save(undefined, (err: any, item: any) => {
 				if (item) {
-                    let savedItem: any = {_id: item._id, role: item.role, firstName: item.firstName, 
-                                    lastName: item.lastName, username: item.username, email: item.email, 
-                                    companyId: item.companyId, status: item.status};
+                    let savedItem: any = {_id: item._id, title: item.title, startTime: item.startTime,
+											endTime: item.endTime, preMeetingAgenda: item.preMeetingAgenda, attendingUsers: item.attendingUsers,
+											recurring: item.recurring, done: item.done, cancelled: item.cancelled};
 					resolve(savedItem);
 				} else {
 					reject({});
@@ -64,7 +64,7 @@ export class EventController extends Controller {
 			let valuesToChange = {title: updateRequest.title, startTime: updateRequest.startTime,
 								  endTime: updateRequest.endTime, preMeetingAgenda: updateRequest.preMeetingAgenda,
 								  attendingUsers: updateRequest.attendingUsers, recurring: updateRequest.recurring,
-								  done: updateRequest.done};
+								  done: updateRequest.done, cancelled: updateRequest.cancelled};
 
 			await EventModel.findOneAndUpdate(query, valuesToChange);
 			resolve();

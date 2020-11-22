@@ -67,19 +67,21 @@ export class UserController extends Controller {
 		});
 	}
 
-	@Get('/{id}')
+	/*@Get('/{id}')
 	public async getAllEventsforUser(id: string): Promise<Event[]> {
 		return new Promise<Event[]> ( async (resolve, reject) => {
+			// todo
 			try {
 				let userItemsFound: any = await UserModel.findById(id);
                 let items: String[] = userItemsFound.map((item : any) => { return {calendar: item.calendar}});
-																	
-				let eventItemsFound: any = await EventModel.find({});
 
-				//for each element in items -- call event method get by Id to return corresponding event, add to a list and return
-				// eventItemsFound.getById
+                let events: Event[];
+				let eventItemsFound: any = items.forEach( async function (value) {
+					let itemsFound: any = await EventModel.findById(id);
+					events.concat(itemsFound);
+				});
+				resolve(events);
 
-				resolve(items);
 			} catch (err) {
 				this.setStatus(500);
 				reject(err);
@@ -94,7 +96,7 @@ export class UserController extends Controller {
 			let query = {_id: userId};
 			// let userItemsFound: any = await UserModel.find({});
             // let items: String[] = userItemsFound.map((item : any) => { return {calendar: item.calendar}});
-			
+
 			let valuesToChange = {role: updateRequest.role, firstName: updateRequest.firstName, lastName: updateRequest.lastName,status: updateRequest.status, calendar: updateRequest.calendar};
 			await UserModel.findOneAndUpdate(query, valuesToChange);
 			//add event
@@ -113,4 +115,6 @@ export class UserController extends Controller {
 			resolve();
 		});
 	}
+
+*/
 }
