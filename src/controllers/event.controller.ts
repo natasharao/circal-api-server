@@ -71,5 +71,39 @@ export class EventController extends Controller {
 		});
 	}
 
+	@Get('/{id}')
+	public async smartScheduling(id: string): Promise<Event> {
+		return new Promise<Event> ( async (resolve,reject) => {
+			/*
+			PSEUDOCODE
+			-	Input:
+				- 	mandatory attendees - list
+				-	optional attendees - list
+				-	when event occurs: next available time OR a certain day/day range – bool/list
+				-	importance level
+			-	Output: time windows when to host meeting w/ info on who’s free when -list
+
+			-	If next available time:
+				-	For each user – find available times within the next 1-2 days
+				-	Check this range and add window to list when every member is free, then when most->least members are free
+					-	Prioritize mandatory members always
+				-	Overwriting: check times where members have other meetings that are of lower priority & can be overwritten & add to list after some sort of distinguishing barrier
+				-	If the list is empty, recur with the next few days – to Limit of a week
+				-	Return list
+			-	If day/day range:
+				-	Check that range and add window to list when every member is free, then when most->least members are free
+					-	Prioritize mandatory members always
+				-	Overwriting: check times where members have other meetings that are of lower priority & can be overwritten & add to list after some sort of distinguishing barrier
+				-	If the list is empty, return that the user must select a different window
+				-	Else: Return list
+			-	Handle recurring meetings
+			  */
+			//let itemsFound: any = await EventModel.findById(id);
+			//resolve(itemsFound);
+
+			resolve();
+		});
+	}
+
 	//smart scheduling alg
 }

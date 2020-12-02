@@ -75,6 +75,12 @@
 					},
 					"done": {
 						"type": "boolean"
+					},
+					"cancelled": {
+						"type": "boolean"
+					},
+					"status": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -85,12 +91,14 @@
 					"preMeetingAgenda",
 					"attendingUsers",
 					"recurring",
-					"done"
+					"done",
+					"cancelled",
+					"status"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Pick_Event.title-or-startTime-or-endTime-or-preMeetingAgenda-or-attendingUsers-or-recurring-or-done_": {
+			"Pick_Event.title-or-startTime-or-endTime-or-preMeetingAgenda-or-attendingUsers-or-recurring-or-done-or-cancelled_": {
 				"properties": {
 					"title": {
 						"type": "string"
@@ -114,6 +122,9 @@
 					},
 					"done": {
 						"type": "boolean"
+					},
+					"cancelled": {
+						"type": "boolean"
 					}
 				},
 				"required": [
@@ -123,16 +134,17 @@
 					"preMeetingAgenda",
 					"attendingUsers",
 					"recurring",
-					"done"
+					"done",
+					"cancelled"
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
 			"EventCreationRequest": {
-				"$ref": "#/components/schemas/Pick_Event.title-or-startTime-or-endTime-or-preMeetingAgenda-or-attendingUsers-or-recurring-or-done_"
+				"$ref": "#/components/schemas/Pick_Event.title-or-startTime-or-endTime-or-preMeetingAgenda-or-attendingUsers-or-recurring-or-done-or-cancelled_"
 			},
 			"EventUpdateRequest": {
-				"$ref": "#/components/schemas/Pick_Event.title-or-startTime-or-endTime-or-preMeetingAgenda-or-attendingUsers-or-recurring-or-done_"
+				"$ref": "#/components/schemas/Pick_Event.title-or-startTime-or-endTime-or-preMeetingAgenda-or-attendingUsers-or-recurring-or-done-or-cancelled_"
 			},
 			"License": {
 				"properties": {

@@ -67,6 +67,8 @@ export class UserController extends Controller {
 		});
 	}
 
+
+
 	/*@Get('/{id}')
 	public async getAllEventsforUser(id: string): Promise<Event[]> {
 		return new Promise<Event[]> ( async (resolve, reject) => {
