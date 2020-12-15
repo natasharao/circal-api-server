@@ -22,7 +22,7 @@ interface User {
     email: string;
     companyId: string;
     status: string;
-    calendar: string;
+    calendar: string[];
 }
 interface Event {
     _id: string;
@@ -30,7 +30,7 @@ interface Event {
     startTime: Date;
     endTime: Date;
     preMeetingAgenda: string;
-    attendingUsers: string;
+    attendingUsers: string[];
     recurring: boolean;
     done: boolean;
     cancelled: boolean;

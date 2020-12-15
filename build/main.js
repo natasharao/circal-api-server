@@ -31,7 +31,7 @@ const server = http.createServer(app_1.app);
 server.listen(PORT);
 server.on('listening', async () => {
     console.info(`Listening on port ${PORT}`);
-    mongoose_1.default.connect(MONGO_URI, { useNewUrlParser: true, useFindAndModify: false });
+    mongoose_1.default.connect(MONGO_URI, { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true, useCreateIndex: true });
     mongoose_1.default.connection.on('open', () => {
         console.info('Connected to Mongo.');
     });

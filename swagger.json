@@ -68,7 +68,10 @@
 						"type": "string"
 					},
 					"attendingUsers": {
-						"type": "string"
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
 					},
 					"recurring": {
 						"type": "boolean"
@@ -115,7 +118,10 @@
 						"type": "string"
 					},
 					"attendingUsers": {
-						"type": "string"
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
 					},
 					"recurring": {
 						"type": "boolean"
@@ -248,7 +254,10 @@
 						"type": "string"
 					},
 					"calendar": {
-						"type": "string"
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
@@ -287,7 +296,10 @@
 						"type": "string"
 					},
 					"calendar": {
-						"type": "string"
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
@@ -635,6 +647,34 @@
 						}
 					}
 				}
+			}
+		},
+		"/event/schedule/{id}": {
+			"get": {
+				"operationId": "SmartScheduling",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Event"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/license/all": {

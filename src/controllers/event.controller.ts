@@ -71,7 +71,7 @@ export class EventController extends Controller {
 		});
 	}
 
-	@Get('/{id}')
+	@Get('/schedule/{id}')
 	public async smartScheduling(id: string): Promise<Event> {
 		return new Promise<Event> ( async (resolve,reject) => {
 			/*

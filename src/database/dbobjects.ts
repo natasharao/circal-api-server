@@ -25,7 +25,7 @@ interface User {
     email: string;
     companyId: string;
     status: string; // invited, active, inactive
-    calendar: string; /** should be array of strings -- see if any issues**/
+    calendar: string[]; /** should be array of strings -- see if any issues**/
 }
 
 interface Event {
@@ -34,7 +34,7 @@ interface Event {
     startTime: Date;
     endTime: Date;
     preMeetingAgenda: string;
-    attendingUsers: string; /** should be array of strings -- see if any issues**/
+    attendingUsers: string[]; /** should be array of strings -- see if any issues**/
     recurring: boolean;
     done: boolean;
     cancelled: boolean;
@@ -47,7 +47,6 @@ interface UserAccountLinks {
     accountType: string; //google, outlook, facebook
     token: string; //access token from the providers
 }
-
 
 // all schemas 
 const CompanySchema = new mongoose.Schema({
@@ -63,8 +62,6 @@ const LicenseSchema = new mongoose.Schema({
     expirationDate: Date
 });
 
-
-
 const UserAccountLinksSchema = new mongoose.Schema({
     userId: String,
     accountType: String, //google, outlook, facebook   TODO CHANGE to enum??
@@ -76,7 +73,7 @@ const EventSchema = new mongoose.Schema({
     startTime: Date,
     endTime: Date,
     preMeetingAgenda: String,
-    attendingUsers: { type: [String], index: true },
+    attendingUsers: {type: [String], index: true },
     recurring: Boolean,
     done: Boolean,
     cancelled: Boolean

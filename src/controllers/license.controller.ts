@@ -12,7 +12,9 @@ export class LicenseController extends Controller {
 		return new Promise<License[]> ( async (resolve, reject) => {
 			try {
 				let itemsFound: any = await LicenseModel.find({});
-				let items: License[] = itemsFound.map((item : any) => { return {_id: item._id, licenseType: item.licenseType, code: item.code, numberOfUsers: item.numberOfUsers, activationDate: item.activationDate,expirationDate: item.expirationDate}});
+				let items: License[] = itemsFound.map((item : any) => { return {_id: item._id, licenseType: item.licenseType, 
+					code: item.code, numberOfUsers: item.numberOfUsers, activationDate: 
+					item.activationDate,expirationDate: item.expirationDate}});
 				resolve(items);
 			} catch (err) {
 				this.setStatus(500);

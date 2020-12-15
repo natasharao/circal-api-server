@@ -16,6 +16,8 @@ until you stop it.
 To stop mongoDB if you need use the following script.
 ```./stopMongoDB.sh```
 
+Upgrading MongoDB
+``` brew upgrade mongodb/brew/mongodb-community ```
 
 * Build steps for circal-api-server
 

@@ -37,7 +37,7 @@ const models = {
             "startTime": { "dataType": "datetime", "required": true },
             "endTime": { "dataType": "datetime", "required": true },
             "preMeetingAgenda": { "dataType": "string", "required": true },
-            "attendingUsers": { "dataType": "string", "required": true },
+            "attendingUsers": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
             "recurring": { "dataType": "boolean", "required": true },
             "done": { "dataType": "boolean", "required": true },
             "cancelled": { "dataType": "boolean", "required": true },
@@ -47,7 +47,7 @@ const models = {
     },
     "Pick_Event.title-or-startTime-or-endTime-or-preMeetingAgenda-or-attendingUsers-or-recurring-or-done-or-cancelled_": {
         "dataType": "refAlias",
-        "type": { "dataType": "nestedObjectLiteral", "nestedProperties": { "title": { "dataType": "string", "required": true }, "startTime": { "dataType": "datetime", "required": true }, "endTime": { "dataType": "datetime", "required": true }, "preMeetingAgenda": { "dataType": "string", "required": true }, "attendingUsers": { "dataType": "string", "required": true }, "recurring": { "dataType": "boolean", "required": true }, "done": { "dataType": "boolean", "required": true }, "cancelled": { "dataType": "boolean", "required": true } }, "validators": {} },
+        "type": { "dataType": "nestedObjectLiteral", "nestedProperties": { "title": { "dataType": "string", "required": true }, "startTime": { "dataType": "datetime", "required": true }, "endTime": { "dataType": "datetime", "required": true }, "preMeetingAgenda": { "dataType": "string", "required": true }, "attendingUsers": { "dataType": "array", "array": { "dataType": "string" }, "required": true }, "recurring": { "dataType": "boolean", "required": true }, "done": { "dataType": "boolean", "required": true }, "cancelled": { "dataType": "boolean", "required": true } }, "validators": {} },
     },
     "EventCreationRequest": {
         "dataType": "refAlias",
@@ -93,13 +93,13 @@ const models = {
             "email": { "dataType": "string", "required": true },
             "companyId": { "dataType": "string", "required": true },
             "status": { "dataType": "string", "required": true },
-            "calendar": { "dataType": "string", "required": true },
+            "calendar": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
         },
         "additionalProperties": false,
     },
     "Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_": {
         "dataType": "refAlias",
-        "type": { "dataType": "nestedObjectLiteral", "nestedProperties": { "role": { "dataType": "string", "required": true }, "firstName": { "dataType": "string", "required": true }, "lastName": { "dataType": "string", "required": true }, "email": { "dataType": "string", "required": true }, "companyId": { "dataType": "string", "required": true }, "status": { "dataType": "string", "required": true }, "calendar": { "dataType": "string", "required": true } }, "validators": {} },
+        "type": { "dataType": "nestedObjectLiteral", "nestedProperties": { "role": { "dataType": "string", "required": true }, "firstName": { "dataType": "string", "required": true }, "lastName": { "dataType": "string", "required": true }, "email": { "dataType": "string", "required": true }, "companyId": { "dataType": "string", "required": true }, "status": { "dataType": "string", "required": true }, "calendar": { "dataType": "array", "array": { "dataType": "string" }, "required": true } }, "validators": {} },
     },
     "UserCreationRequest": {
         "dataType": "refAlias",
@@ -284,6 +284,21 @@ function RegisterRoutes(app) {
         }
         const controller = new event_controller_1.EventController();
         const promise = controller.update.apply(controller, validatedArgs);
+        promiseHandler(controller, promise, response, next);
+    });
+    app.get('/event/schedule/:id', function (request, response, next) {
+        const args = {
+            id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
+        };
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+        }
+        catch (err) {
+            return next(err);
+        }
+        const controller = new event_controller_1.EventController();
+        const promise = controller.smartScheduling.apply(controller, validatedArgs);
         promiseHandler(controller, promise, response, next);
     });
     app.get('/license/all', function (request, response, next) {

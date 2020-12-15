@@ -1,2 +1,2 @@
 #!/bin/sh
-brew services start mongodb-community@4.2
+brew services start mongodb-community@4.4

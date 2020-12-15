@@ -17,7 +17,10 @@ let LicenseController = class LicenseController extends tsoa_1.Controller {
         return new Promise(async (resolve, reject) => {
             try {
                 let itemsFound = await dbobjects_1.LicenseModel.find({});
-                let items = itemsFound.map((item) => { return { _id: item._id, licenseType: item.licenseType, code: item.code, numberOfUsers: item.numberOfUsers, activationDate: item.activationDate, expirationDate: item.expirationDate }; });
+                let items = itemsFound.map((item) => {
+                    return { _id: item._id, licenseType: item.licenseType,
+                        code: item.code, numberOfUsers: item.numberOfUsers, activationDate: item.activationDate, expirationDate: item.expirationDate };
+                });
                 resolve(items);
             }
             catch (err) {

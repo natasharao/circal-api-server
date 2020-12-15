@@ -8,5 +8,6 @@ export declare class EventController extends Controller {
     create(createRequest: EventCreationRequest): Promise<Event>;
     remove(id: string): Promise<void>;
     update(id: string, updateRequest: EventUpdateRequest): Promise<void>;
+    smartScheduling(id: string): Promise<Event>;
 }
 //# sourceMappingURL=event.controller.d.ts.map

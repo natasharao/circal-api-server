@@ -69,6 +69,11 @@ let EventController = class EventController extends tsoa_1.Controller {
             resolve();
         });
     }
+    async smartScheduling(id) {
+        return new Promise(async (resolve, reject) => {
+            resolve();
+        });
+    }
 };
 __decorate([
     tsoa_1.Get('/all')
@@ -87,6 +92,9 @@ __decorate([
     tsoa_1.Put('/{id}'),
     __param(1, tsoa_1.Body())
 ], EventController.prototype, "update", null);
+__decorate([
+    tsoa_1.Get('/schedule/{id}')
+], EventController.prototype, "smartScheduling", null);
 EventController = __decorate([
     tsoa_1.Route('/event')
 ], EventController);
