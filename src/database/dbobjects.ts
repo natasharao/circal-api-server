@@ -28,7 +28,7 @@ interface User {
     calendar: string[]; /** should be array of strings -- see if any issues**/
 }
 
-interface Event {
+interface Meeting {
     _id: string;
     title: string;
     startTime: Date;
@@ -68,7 +68,7 @@ const UserAccountLinksSchema = new mongoose.Schema({
     token: String //access token from the providers
 });
 
-const EventSchema = new mongoose.Schema({
+const MeetingSchema = new mongoose.Schema({
     title: String,
     startTime: Date,
     endTime: Date,
@@ -96,7 +96,7 @@ const CompanyModel = mongoose.model('Company', CompanySchema);
 const LicenseModel = mongoose.model('License', LicenseSchema);
 const UserModel = mongoose.model('User', UserSchema);
 const UserAccountLinksModel = mongoose.model('UserAccountLinks', UserAccountLinksSchema);
-const EventModel = mongoose.model('Event', EventSchema);
+const MeetingModel = mongoose.model('Meeting', MeetingSchema);
 
 
 //export models and interface so our controllers can use them
@@ -104,4 +104,4 @@ export { CompanyModel, Company }
 export { LicenseModel, License }
 export { UserModel, User}
 export { UserAccountLinksModel, UserAccountLinks }
-export { EventModel, Event }
+export { MeetingModel , Meeting }

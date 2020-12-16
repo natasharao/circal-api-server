@@ -1,4 +1,4 @@
-import { UserModel, User, Event, EventModel } from '../database/dbobjects';
+import { UserModel, User, Meeting, MeetingModel } from '../database/dbobjects';
 import { Controller, Route, Get, Post, Body, Put, Delete } from 'tsoa';
 
 export type UserCreationRequest = Pick<User, "role" | "firstName" | "lastName" | "email" | "companyId" | "status" | "calendar">;
