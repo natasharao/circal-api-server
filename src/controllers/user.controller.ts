@@ -49,6 +49,27 @@ export class UserController extends Controller {
 		});
 	}
 
+	// @Post('/googleSignUp')
+	// public async createWithGoogle(@Body() createRequest: UserCreationRequest) : Promise<User> {
+	// 	return new Promise<User> ( async (resolve, reject) => {
+	// 		const item = new UserModel(createRequest);
+	// 		//another way to save and check for errors while saving
+	// 		await item.save(undefined, (err: any, item: any) => {
+	// 			// first find existing user ?
+	// 			// if present retrieve and update	
+
+	// 			// if (item) {
+    //             //     let savedItem: any = {_id: item._id, role: item.role, firstName: item.firstName, 
+    //             //                     lastName: item.lastName, username: item.username, email: item.email, 
+    //             //                     companyId: item.companyId, status: item.status, calendar: item.calendar};
+	// 			// 	resolve(savedItem);
+	// 			// } else {
+	// 			// 	reject({});
+	// 			// }
+	// 	    });  
+	// 	});
+	// }
+
 	@Delete('/{id}')
 	public async remove(id: string) : Promise<void> {
 		return new Promise<void> ( async (resolve,reject) => {
@@ -66,4 +87,17 @@ export class UserController extends Controller {
 			resolve();
 		});
 	}
+
+	// @Get('/profile/{id}')
+	// public async getProfile(id: string): Promise<User[]> {
+	// 	return new Promise<User[]> ( async (resolve, reject) => {
+	// 		try {
+	// 			let itemsFound: any = await UserModel.findById(id);
+	// 			resolve(itemsFound);
+	// 		} catch (err) {
+	// 			this.setStatus(500);
+	// 			reject(err);
+	// 		}
+	// 	});
+	// }
 }
