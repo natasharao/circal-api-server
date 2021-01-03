@@ -114,6 +114,7 @@ const models: TsoaRoute.Models = {
             "email": {"dataType":"string","required":true},
             "companyId": {"dataType":"string","required":true},
             "status": {"dataType":"string","required":true},
+            "cal_keys": {"dataType":"array","array":{"dataType":"array","array":{"dataType":"string"}},"required":true},
             "calendar": {"dataType":"array","array":{"dataType":"string"},"required":true},
         },
         "additionalProperties": false,

@@ -23,9 +23,20 @@ interface User {
     lastName: string;
     passwordHash: string;
     email: string;
+    profileURL: string;
     companyId: string;
     status: string; // invited, active, inactive
+    cal_keys: string[][];
     calendar: string[]; /** should be array of strings -- see if any issues**/
+    accountLinks: UserAccountLinks[]
+    tasks: Task[]
+}
+
+interface Task {
+    _id: string,
+    taskName: string,
+    dueDate: Date,
+    completion: boolean
 }
 
 interface Meeting {
@@ -43,7 +54,6 @@ interface Meeting {
 
 interface UserAccountLinks {
     _id: string;
-    userId: string;
     accountType: string; //google, outlook, facebook
     token: string; //access token from the providers
 }
@@ -54,6 +64,12 @@ const CompanySchema = new mongoose.Schema({
     licenseId:  { type: String, index: true, unique: true }
 });
 
+const TaskSchema = new mongoose.Schema({
+    taskName: {type: String, index: true, unique: false},
+    dueDate: Date,
+    completion: Boolean
+})
+
 const LicenseSchema = new mongoose.Schema({
     licenseType: { type: String, index: true, enumValues: ['student','teams','enterprise']}, 
     code: String, //License sharing code
@@ -63,7 +79,6 @@ const LicenseSchema = new mongoose.Schema({
 });
 
 const UserAccountLinksSchema = new mongoose.Schema({
-    userId: String,
     accountType: String, //google, outlook, facebook   TODO CHANGE to enum??
     token: String //access token from the providers
 });
@@ -88,7 +103,10 @@ const UserSchema = new mongoose.Schema({
     email:  { type: String, index: true },
     companyId: String,
     status:  { type: String, index: true, enumValues: ['invited','active','inactive'] }, 
-    calendar: { type: [String], index: true }
+    cal_keys: {type: [[String]], index: true},
+    calendar: { type: [String], index: true },
+    accountLinks: [UserAccountLinksSchema],
+    tasks: [TaskSchema]
 });
 
 
