@@ -47,7 +47,6 @@ export class CompanyController extends Controller {
 			item.save();
 			resolve();
 		});
-
 	}
 
 	@Put('/{id}')

@@ -22,7 +22,7 @@ export class UserController extends Controller {
 		});
 	}
 	
-	@Get('/{id}')
+	@Get('/get/{id}')
 	public async getById(id: string): Promise<User> {
 		return new Promise<User> ( async (resolve,reject) => {
 			let itemsFound: any = await UserModel.findById(id);
@@ -36,7 +36,7 @@ export class UserController extends Controller {
 		return new Promise<User> ( async (resolve, reject) => {
 			const item = new UserModel(createRequest);
 			//another way to save and check for errors while saving
-			await item.save(undefined, (err: any, item: any) => {
+		    await item.save(undefined, (err: any, item: any) => {
 				if (item) {
                     let savedItem: any = {_id: item._id, role: item.role, firstName: item.firstName, 
                                     lastName: item.lastName, username: item.username, email: item.email, 
@@ -70,7 +70,7 @@ export class UserController extends Controller {
 	// 	});
 	// }
 
-	@Delete('/{id}')
+	@Delete('/delete/{id}')
 	public async remove(id: string) : Promise<void> {
 		return new Promise<void> ( async (resolve,reject) => {
 			await UserModel.findByIdAndRemove(id);
@@ -78,7 +78,7 @@ export class UserController extends Controller {
 		});
 	}
 
-	@Put('/{id}')
+	@Put('/put/{id}')
 	public async update(id: string, @Body() updateRequest: UserUpdateRequest) : Promise<void> {
 		return new Promise<void> ( async (resolve, reject) => {
 			let query = {_id: id};

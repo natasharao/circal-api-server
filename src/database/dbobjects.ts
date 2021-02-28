@@ -29,14 +29,14 @@ interface User {
     cal_keys: string[][];
     calendar: string[]; /** should be array of strings -- see if any issues**/
     accountLinks: UserAccountLinks[]
-    tasks: Task[]
 }
 
 interface Task {
-    _id: string,
-    taskName: string,
-    dueDate: Date,
-    completion: boolean
+    _id: string;
+    userId: string;
+    taskName: string;
+    dueDate: Date;
+    completionStatus: string;
 }
 
 interface Meeting {
@@ -66,8 +66,9 @@ const CompanySchema = new mongoose.Schema({
 
 const TaskSchema = new mongoose.Schema({
     taskName: {type: String, index: true, unique: false},
+    userId: String,
     dueDate: Date,
-    completion: Boolean
+    completionStatus: {type: String, enumValues: ['notstarted','inprogress','completed']}
 })
 
 const LicenseSchema = new mongoose.Schema({
@@ -106,7 +107,6 @@ const UserSchema = new mongoose.Schema({
     cal_keys: {type: [[String]], index: true},
     calendar: { type: [String], index: true },
     accountLinks: [UserAccountLinksSchema],
-    tasks: [TaskSchema]
 });
 
 
@@ -115,6 +115,7 @@ const LicenseModel = mongoose.model('License', LicenseSchema);
 const UserModel = mongoose.model('User', UserSchema);
 const UserAccountLinksModel = mongoose.model('UserAccountLinks', UserAccountLinksSchema);
 const MeetingModel = mongoose.model('Meeting', MeetingSchema);
+const TaskModel = mongoose.model('Task', TaskSchema);
 
 
 //export models and interface so our controllers can use them
@@ -123,3 +124,4 @@ export { LicenseModel, License }
 export { UserModel, User}
 export { UserAccountLinksModel, UserAccountLinks }
 export { MeetingModel , Meeting }
+export { TaskModel, Task }

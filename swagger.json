@@ -48,6 +48,78 @@
 			"CompanyUpdateRequest": {
 				"$ref": "#/components/schemas/Pick_Company.name-or-licenseId_"
 			},
+			"License": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"licenseType": {
+						"type": "string"
+					},
+					"code": {
+						"type": "string"
+					},
+					"numberOfUsers": {
+						"type": "number",
+						"format": "double"
+					},
+					"activationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"expirationDate": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"_id",
+					"licenseType",
+					"code",
+					"numberOfUsers",
+					"activationDate",
+					"expirationDate"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_License.licenseType-or-code-or-numberOfUsers-or-activationDate-or-expirationDate_": {
+				"properties": {
+					"licenseType": {
+						"type": "string"
+					},
+					"code": {
+						"type": "string"
+					},
+					"numberOfUsers": {
+						"type": "number",
+						"format": "double"
+					},
+					"activationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"expirationDate": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"licenseType",
+					"code",
+					"numberOfUsers",
+					"activationDate",
+					"expirationDate"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"LicenseCreationRequest": {
+				"$ref": "#/components/schemas/Pick_License.licenseType-or-code-or-numberOfUsers-or-activationDate-or-expirationDate_"
+			},
+			"LicenseUpdateRequest": {
+				"$ref": "#/components/schemas/Pick_License.licenseType-or-code-or-numberOfUsers-or-activationDate-or-expirationDate_"
+			},
 			"Meeting": {
 				"properties": {
 					"_id": {
@@ -152,77 +224,77 @@
 			"MeetingUpdateRequest": {
 				"$ref": "#/components/schemas/Pick_Meeting.title-or-startTime-or-endTime-or-preMeetingAgenda-or-attendingUsers-or-recurring-or-done-or-cancelled_"
 			},
-			"License": {
+			"Task": {
 				"properties": {
 					"_id": {
 						"type": "string"
 					},
-					"licenseType": {
+					"taskName": {
 						"type": "string"
 					},
-					"code": {
-						"type": "string"
-					},
-					"numberOfUsers": {
-						"type": "number",
-						"format": "double"
-					},
-					"activationDate": {
+					"dueDate": {
 						"type": "string",
 						"format": "date-time"
 					},
-					"expirationDate": {
-						"type": "string",
-						"format": "date-time"
+					"completionStatus": {
+						"type": "string"
 					}
 				},
 				"required": [
 					"_id",
-					"licenseType",
-					"code",
-					"numberOfUsers",
-					"activationDate",
-					"expirationDate"
+					"taskName",
+					"dueDate",
+					"completionStatus"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Pick_License.licenseType-or-code-or-numberOfUsers-or-activationDate-or-expirationDate_": {
+			"Pick_Task.taskName-or-dueDate-or-completionStatus_": {
 				"properties": {
-					"licenseType": {
+					"taskName": {
 						"type": "string"
 					},
-					"code": {
-						"type": "string"
-					},
-					"numberOfUsers": {
-						"type": "number",
-						"format": "double"
-					},
-					"activationDate": {
+					"dueDate": {
 						"type": "string",
 						"format": "date-time"
 					},
-					"expirationDate": {
-						"type": "string",
-						"format": "date-time"
+					"completionStatus": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"licenseType",
-					"code",
-					"numberOfUsers",
-					"activationDate",
-					"expirationDate"
+					"taskName",
+					"dueDate",
+					"completionStatus"
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
-			"LicenseCreationRequest": {
-				"$ref": "#/components/schemas/Pick_License.licenseType-or-code-or-numberOfUsers-or-activationDate-or-expirationDate_"
+			"TaskCreationRequest": {
+				"$ref": "#/components/schemas/Pick_Task.taskName-or-dueDate-or-completionStatus_"
 			},
-			"LicenseUpdateRequest": {
-				"$ref": "#/components/schemas/Pick_License.licenseType-or-code-or-numberOfUsers-or-activationDate-or-expirationDate_"
+			"TaskUpdateRequest": {
+				"$ref": "#/components/schemas/Pick_Task.taskName-or-dueDate-or-completionStatus_"
+			},
+			"UserAccountLinks": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"accountType": {
+						"type": "string"
+					},
+					"token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"_id",
+					"accountType",
+					"token"
+				],
+				"type": "object",
+				"additionalProperties": false
 			},
 			"User": {
 				"properties": {
@@ -247,6 +319,9 @@
 					"email": {
 						"type": "string"
 					},
+					"profileURL": {
+						"type": "string"
+					},
 					"companyId": {
 						"type": "string"
 					},
@@ -267,6 +342,18 @@
 							"type": "string"
 						},
 						"type": "array"
+					},
+					"accountLinks": {
+						"items": {
+							"$ref": "#/components/schemas/UserAccountLinks"
+						},
+						"type": "array"
+					},
+					"tasks": {
+						"items": {
+							"$ref": "#/components/schemas/Task"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
@@ -277,15 +364,18 @@
 					"lastName",
 					"passwordHash",
 					"email",
+					"profileURL",
 					"companyId",
 					"status",
 					"cal_keys",
-					"calendar"
+					"calendar",
+					"accountLinks",
+					"tasks"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_": {
+			"Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar-or-tasks_": {
 				"properties": {
 					"role": {
 						"type": "string"
@@ -310,6 +400,12 @@
 							"type": "string"
 						},
 						"type": "array"
+					},
+					"tasks": {
+						"items": {
+							"$ref": "#/components/schemas/Task"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
@@ -319,25 +415,20 @@
 					"email",
 					"companyId",
 					"status",
-					"calendar"
+					"calendar",
+					"tasks"
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
 			"UserCreationRequest": {
-				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_"
+				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar-or-tasks_"
 			},
 			"UserUpdateRequest": {
-				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_"
+				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar-or-tasks_"
 			},
-			"UserAccountLinks": {
+			"Pick_UserAccountLinks.accountType-or-token_": {
 				"properties": {
-					"_id": {
-						"type": "string"
-					},
-					"userId": {
-						"type": "string"
-					},
 					"accountType": {
 						"type": "string"
 					},
@@ -346,28 +437,6 @@
 					}
 				},
 				"required": [
-					"_id",
-					"userId",
-					"accountType",
-					"token"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Pick_UserAccountLinks.userId-or-accountType-or-token_": {
-				"properties": {
-					"userId": {
-						"type": "string"
-					},
-					"accountType": {
-						"type": "string"
-					},
-					"token": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"userId",
 					"accountType",
 					"token"
 				],
@@ -375,26 +444,22 @@
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
 			"UserAccountLinksCreationRequest": {
-				"$ref": "#/components/schemas/Pick_UserAccountLinks.userId-or-accountType-or-token_"
+				"$ref": "#/components/schemas/Pick_UserAccountLinks.accountType-or-token_"
 			},
-			"Pick_UserAccountLinks.userId-or-accountType_": {
+			"Pick_UserAccountLinks.accountType_": {
 				"properties": {
-					"userId": {
-						"type": "string"
-					},
 					"accountType": {
 						"type": "string"
 					}
 				},
 				"required": [
-					"userId",
 					"accountType"
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
 			"UserAccountLinksUpdateRequest": {
-				"$ref": "#/components/schemas/Pick_UserAccountLinks.userId-or-accountType_"
+				"$ref": "#/components/schemas/Pick_UserAccountLinks.accountType_"
 			}
 		},
 		"securitySchemes": {}
@@ -530,6 +595,110 @@
 						}
 					}
 				]
+			}
+		},
+		"/license/all": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/License"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/license/student": {
+			"get": {
+				"operationId": "GetAllStudentLicences",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/License"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/license": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/License"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LicenseCreationRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/license/{id}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LicenseUpdateRequest"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/meeting/all": {
@@ -687,7 +856,7 @@
 				]
 			}
 		},
-		"/license/all": {
+		"/task/all": {
 			"get": {
 				"operationId": "GetAll",
 				"responses": {
@@ -697,7 +866,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/License"
+										"$ref": "#/components/schemas/Task"
 									},
 									"type": "array"
 								}
@@ -709,9 +878,9 @@
 				"parameters": []
 			}
 		},
-		"/license/student": {
+		"/task/get/{completionStatus}": {
 			"get": {
-				"operationId": "GetAllStudentLicences",
+				"operationId": "GetByStatus",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -719,7 +888,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/License"
+										"$ref": "#/components/schemas/Task"
 									},
 									"type": "array"
 								}
@@ -728,10 +897,19 @@
 					}
 				},
 				"security": [],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "completionStatus",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
-		"/license": {
+		"/task": {
 			"post": {
 				"operationId": "Create",
 				"responses": {
@@ -740,7 +918,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/License"
+									"$ref": "#/components/schemas/Task"
 								}
 							}
 						}
@@ -753,14 +931,14 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/LicenseCreationRequest"
+								"$ref": "#/components/schemas/TaskCreationRequest"
 							}
 						}
 					}
 				}
 			}
 		},
-		"/license/{id}": {
+		"/task/{id}": {
 			"put": {
 				"operationId": "Update",
 				"responses": {
@@ -784,11 +962,30 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/LicenseUpdateRequest"
+								"$ref": "#/components/schemas/TaskUpdateRequest"
 							}
 						}
 					}
 				}
+			},
+			"delete": {
+				"operationId": "Remove",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/user/all": {
@@ -813,7 +1010,7 @@
 				"parameters": []
 			}
 		},
-		"/user/{id}": {
+		"/user/get/{id}": {
 			"get": {
 				"operationId": "GetById",
 				"responses": {
@@ -839,54 +1036,6 @@
 						}
 					}
 				]
-			},
-			"delete": {
-				"operationId": "Remove",
-				"responses": {
-					"204": {
-						"description": "No content"
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			},
-			"put": {
-				"operationId": "Update",
-				"responses": {
-					"204": {
-						"description": "No content"
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UserUpdateRequest"
-							}
-						}
-					}
-				}
 			}
 		},
 		"/user": {
@@ -912,6 +1061,58 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/UserCreationRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/delete/{id}": {
+			"delete": {
+				"operationId": "Remove",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/user/put/{id}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserUpdateRequest"
 							}
 						}
 					}
