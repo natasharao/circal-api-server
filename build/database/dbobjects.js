@@ -6,18 +6,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TaskModel = exports.MeetingModel = exports.UserAccountLinksModel = exports.UserModel = exports.LicenseModel = exports.CompanyModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const CompanySchema = new mongoose_1.default.Schema({
-    _id: { type: String, index: true, required: true, auto: true },
     name: { type: String, index: true, unique: true },
     licenseId: { type: String, index: true, unique: true }
 });
 const TaskSchema = new mongoose_1.default.Schema({
-    _id: { type: String, index: true, required: true, auto: true },
     taskName: { type: String, index: true, unique: false },
+    userId: String,
     dueDate: Date,
-    completionStatus: String
+    priority: { type: String, enumValyes: ['low', 'medium', 'high'] },
+    completionStatus: { type: String, enumValues: ['notstarted', 'inprogress', 'completed'] }
 });
 const LicenseSchema = new mongoose_1.default.Schema({
-    _id: { type: String, index: true, required: true, auto: true },
     licenseType: { type: String, index: true, enumValues: ['student', 'teams', 'enterprise'] },
     code: String,
     numberOfUsers: Number,
@@ -25,12 +24,10 @@ const LicenseSchema = new mongoose_1.default.Schema({
     expirationDate: Date
 });
 const UserAccountLinksSchema = new mongoose_1.default.Schema({
-    _id: { type: String, index: true, required: true, auto: true },
     accountType: String,
     token: String
 });
 const MeetingSchema = new mongoose_1.default.Schema({
-    _id: { type: String, index: true, required: true, auto: true },
     title: String,
     startTime: Date,
     endTime: Date,
@@ -41,7 +38,6 @@ const MeetingSchema = new mongoose_1.default.Schema({
     cancelled: Boolean
 });
 const UserSchema = new mongoose_1.default.Schema({
-    _id: { type: String, index: true, required: true, auto: true },
     role: { type: String, index: true, enumValues: ['default', 'admin'] },
     username: { type: String, index: true, unique: true },
     firstName: { type: String, index: true, unique: true },
@@ -53,7 +49,6 @@ const UserSchema = new mongoose_1.default.Schema({
     cal_keys: { type: [[String]], index: true },
     calendar: { type: [String], index: true },
     accountLinks: [UserAccountLinksSchema],
-    tasks: [TaskSchema]
 });
 const CompanyModel = mongoose_1.default.model('Company', CompanySchema);
 exports.CompanyModel = CompanyModel;

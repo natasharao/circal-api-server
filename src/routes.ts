@@ -108,26 +108,28 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "_id": {"dataType":"string","required":true},
+            "userId": {"dataType":"string","required":true},
             "taskName": {"dataType":"string","required":true},
             "dueDate": {"dataType":"datetime","required":true},
+            "priority": {"dataType":"string","required":true},
             "completionStatus": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_Task.taskName-or-dueDate-or-completionStatus_": {
+    "Pick_Task.taskName-or-userId-or-dueDate-or-priority-or-completionStatus_": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"taskName":{"dataType":"string","required":true},"dueDate":{"dataType":"datetime","required":true},"completionStatus":{"dataType":"string","required":true}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"taskName":{"dataType":"string","required":true},"userId":{"dataType":"string","required":true},"dueDate":{"dataType":"datetime","required":true},"priority":{"dataType":"string","required":true},"completionStatus":{"dataType":"string","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "TaskCreationRequest": {
         "dataType": "refAlias",
-        "type": {"ref":"Pick_Task.taskName-or-dueDate-or-completionStatus_","validators":{}},
+        "type": {"ref":"Pick_Task.taskName-or-userId-or-dueDate-or-priority-or-completionStatus_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "TaskUpdateRequest": {
         "dataType": "refAlias",
-        "type": {"ref":"Pick_Task.taskName-or-dueDate-or-completionStatus_","validators":{}},
+        "type": {"ref":"Pick_Task.taskName-or-userId-or-dueDate-or-priority-or-completionStatus_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UserAccountLinks": {
@@ -156,24 +158,23 @@ const models: TsoaRoute.Models = {
             "cal_keys": {"dataType":"array","array":{"dataType":"array","array":{"dataType":"string"}},"required":true},
             "calendar": {"dataType":"array","array":{"dataType":"string"},"required":true},
             "accountLinks": {"dataType":"array","array":{"ref":"UserAccountLinks"},"required":true},
-            "tasks": {"dataType":"array","array":{"ref":"Task"},"required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar-or-tasks_": {
+    "Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"role":{"dataType":"string","required":true},"firstName":{"dataType":"string","required":true},"lastName":{"dataType":"string","required":true},"email":{"dataType":"string","required":true},"companyId":{"dataType":"string","required":true},"status":{"dataType":"string","required":true},"calendar":{"dataType":"array","array":{"dataType":"string"},"required":true},"tasks":{"dataType":"array","array":{"ref":"Task"},"required":true}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"role":{"dataType":"string","required":true},"firstName":{"dataType":"string","required":true},"lastName":{"dataType":"string","required":true},"email":{"dataType":"string","required":true},"companyId":{"dataType":"string","required":true},"status":{"dataType":"string","required":true},"calendar":{"dataType":"array","array":{"dataType":"string"},"required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UserCreationRequest": {
         "dataType": "refAlias",
-        "type": {"ref":"Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar-or-tasks_","validators":{}},
+        "type": {"ref":"Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UserUpdateRequest": {
         "dataType": "refAlias",
-        "type": {"ref":"Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar-or-tasks_","validators":{}},
+        "type": {"ref":"Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_UserAccountLinks.accountType-or-token_": {
@@ -556,10 +557,57 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/task/get/:completionStatus',
+        app.get('/task/getOnDate/:userId',
+            function (request: any, response: any, next: any) {
+            const args = {
+                    dueDate: {"in":"query","name":"dueDate","required":true,"dataType":"datetime"},
+                    userId: {"in":"query","name":"userId","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new TaskController();
+
+
+            const promise = controller.getOnDate.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/task/getPriority/:userId',
+            function (request: any, response: any, next: any) {
+            const args = {
+                    userId: {"in":"query","name":"userId","required":true,"dataType":"string"},
+                    priority: {"in":"query","name":"priority","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new TaskController();
+
+
+            const promise = controller.getByPriority.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/task/getStatus/:userId',
             function (request: any, response: any, next: any) {
             const args = {
                     completionStatus: {"in":"query","name":"completionStatus","required":true,"dataType":"string"},
+                    userId: {"in":"query","name":"userId","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

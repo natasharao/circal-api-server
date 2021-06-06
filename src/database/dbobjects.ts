@@ -36,6 +36,7 @@ interface Task {
     userId: string;
     taskName: string;
     dueDate: Date;
+    priority: string;
     completionStatus: string;
 }
 
@@ -68,6 +69,7 @@ const TaskSchema = new mongoose.Schema({
     taskName: {type: String, index: true, unique: false},
     userId: String,
     dueDate: Date,
+    priority: {type: String, enumValyes: ['low', 'medium', 'high']},
     completionStatus: {type: String, enumValues: ['notstarted','inprogress','completed']}
 })
 

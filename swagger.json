@@ -229,12 +229,18 @@
 					"_id": {
 						"type": "string"
 					},
+					"userId": {
+						"type": "string"
+					},
 					"taskName": {
 						"type": "string"
 					},
 					"dueDate": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"priority": {
+						"type": "string"
 					},
 					"completionStatus": {
 						"type": "string"
@@ -242,21 +248,29 @@
 				},
 				"required": [
 					"_id",
+					"userId",
 					"taskName",
 					"dueDate",
+					"priority",
 					"completionStatus"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Pick_Task.taskName-or-dueDate-or-completionStatus_": {
+			"Pick_Task.taskName-or-userId-or-dueDate-or-priority-or-completionStatus_": {
 				"properties": {
 					"taskName": {
+						"type": "string"
+					},
+					"userId": {
 						"type": "string"
 					},
 					"dueDate": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"priority": {
+						"type": "string"
 					},
 					"completionStatus": {
 						"type": "string"
@@ -264,17 +278,19 @@
 				},
 				"required": [
 					"taskName",
+					"userId",
 					"dueDate",
+					"priority",
 					"completionStatus"
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
 			"TaskCreationRequest": {
-				"$ref": "#/components/schemas/Pick_Task.taskName-or-dueDate-or-completionStatus_"
+				"$ref": "#/components/schemas/Pick_Task.taskName-or-userId-or-dueDate-or-priority-or-completionStatus_"
 			},
 			"TaskUpdateRequest": {
-				"$ref": "#/components/schemas/Pick_Task.taskName-or-dueDate-or-completionStatus_"
+				"$ref": "#/components/schemas/Pick_Task.taskName-or-userId-or-dueDate-or-priority-or-completionStatus_"
 			},
 			"UserAccountLinks": {
 				"properties": {
@@ -348,12 +364,6 @@
 							"$ref": "#/components/schemas/UserAccountLinks"
 						},
 						"type": "array"
-					},
-					"tasks": {
-						"items": {
-							"$ref": "#/components/schemas/Task"
-						},
-						"type": "array"
 					}
 				},
 				"required": [
@@ -369,13 +379,12 @@
 					"status",
 					"cal_keys",
 					"calendar",
-					"accountLinks",
-					"tasks"
+					"accountLinks"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar-or-tasks_": {
+			"Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_": {
 				"properties": {
 					"role": {
 						"type": "string"
@@ -400,12 +409,6 @@
 							"type": "string"
 						},
 						"type": "array"
-					},
-					"tasks": {
-						"items": {
-							"$ref": "#/components/schemas/Task"
-						},
-						"type": "array"
 					}
 				},
 				"required": [
@@ -415,17 +418,16 @@
 					"email",
 					"companyId",
 					"status",
-					"calendar",
-					"tasks"
+					"calendar"
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
 			"UserCreationRequest": {
-				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar-or-tasks_"
+				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_"
 			},
 			"UserUpdateRequest": {
-				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar-or-tasks_"
+				"$ref": "#/components/schemas/Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_"
 			},
 			"Pick_UserAccountLinks.accountType-or-token_": {
 				"properties": {
@@ -878,7 +880,86 @@
 				"parameters": []
 			}
 		},
-		"/task/get/{completionStatus}": {
+		"/task/getOnDate/{userId}": {
+			"get": {
+				"operationId": "GetOnDate",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Task"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "dueDate",
+						"required": true,
+						"schema": {
+							"format": "date-time",
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/task/getPriority/{userId}": {
+			"get": {
+				"operationId": "GetByPriority",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Task"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "priority",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/task/getStatus/{userId}": {
 			"get": {
 				"operationId": "GetByStatus",
 				"responses": {
@@ -901,6 +982,14 @@
 					{
 						"in": "query",
 						"name": "completionStatus",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "userId",
 						"required": true,
 						"schema": {
 							"type": "string"

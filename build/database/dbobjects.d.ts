@@ -26,12 +26,13 @@ interface User {
     cal_keys: string[][];
     calendar: string[];
     accountLinks: UserAccountLinks[];
-    tasks: Task[];
 }
 interface Task {
     _id: string;
+    userId: string;
     taskName: string;
     dueDate: Date;
+    priority: string;
     completionStatus: string;
 }
 interface Meeting {

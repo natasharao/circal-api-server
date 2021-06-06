@@ -17,10 +17,12 @@ let TaskController = class TaskController extends tsoa_1.Controller {
         return new Promise(async (resolve, reject) => {
             try {
                 let itemsFound = await dbobjects_1.TaskModel.find({});
-                let items = itemsFound.mao((item) => {
+                let items = itemsFound.map((item) => {
                     return {
                         taskName: item.taskName,
+                        userId: item.userId,
                         dueDate: item.dueDate,
+                        priority: item.priority,
                         completionStatus: item.completionStatus
                     };
                 });
@@ -32,15 +34,63 @@ let TaskController = class TaskController extends tsoa_1.Controller {
             }
         });
     }
-    async getByStatus(completionStatus) {
+    async getOnDate(dueDate, userId) {
         return new Promise(async (resolve, reject) => {
             try {
-                console.log(`circal-api: getByStatus called ${completionStatus}`);
-                let itemsFound = await dbobjects_1.TaskModel.find().where('completionStatus').equals(completionStatus);
+                console.log(`circal-api: getOnDate called ${dueDate}`);
+                let itemsFound = await (await await (dbobjects_1.TaskModel.find({ 'userId': userId, 'dueDate': dueDate })));
                 let items = itemsFound.map((item) => {
                     return {
                         taskName: item.taskName,
+                        userId: item.userId,
                         dueDate: item.dueDate,
+                        priority: item.priority,
+                        completionStatus: item.completionStatus
+                    };
+                });
+                resolve(items);
+            }
+            catch (err) {
+                this.setStatus(500);
+                console.error('Caught error', err);
+                reject(err);
+            }
+        });
+    }
+    async getByPriority(userId, priority) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                console.log(`circal-api: getByPriority called ${priority}`);
+                let itemsFound = await (await await (dbobjects_1.TaskModel.find({ 'userId': userId, 'priority': priority })));
+                let items = itemsFound.map((item) => {
+                    return {
+                        taskName: item.taskName,
+                        userId: item.userId,
+                        dueDate: item.dueDate,
+                        priority: item.priority,
+                        completionStatus: item.completionStatus
+                    };
+                });
+                resolve(items);
+            }
+            catch (err) {
+                this.setStatus(500);
+                console.error('Caught error', err);
+                reject(err);
+            }
+        });
+    }
+    async getByStatus(completionStatus, userId) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                console.log(`circal-api: getByStatus called ${completionStatus}`);
+                let itemsFound = await (await await (dbobjects_1.TaskModel.find({ 'userId': userId, 'completionStatus': completionStatus })));
+                let items = itemsFound.map((item) => {
+                    return {
+                        taskName: item.taskName,
+                        userId: item.userId,
+                        dueDate: item.dueDate,
+                        priority: item.priority,
                         completionStatus: item.completionStatus
                     };
                 });
@@ -56,10 +106,15 @@ let TaskController = class TaskController extends tsoa_1.Controller {
     async create(createRequest) {
         return new Promise(async (resolve, reject) => {
             const item = new dbobjects_1.TaskModel(createRequest);
-            await item.save(undefined, (err, item) => {
+            item.save(undefined, (err, item) => {
                 if (item) {
-                    let savedItem = { taskName: item.taskName,
-                        dueDate: item.dueDate, completionStatus: item.completionStatus };
+                    let savedItem = {
+                        taskName: item.taskName,
+                        userId: item.userId,
+                        dueDate: item.dueDate,
+                        priority: item.priority,
+                        completionStatus: item.completionStatus
+                    };
                     resolve(savedItem);
                 }
                 else {
@@ -85,8 +140,16 @@ __decorate([
     tsoa_1.Get('/all')
 ], TaskController.prototype, "getAll", null);
 __decorate([
-    tsoa_1.Get('/get/{completionStatus}'),
-    __param(0, tsoa_1.Query())
+    tsoa_1.Get('/getOnDate/{userId}'),
+    __param(0, tsoa_1.Query()), __param(1, tsoa_1.Query())
+], TaskController.prototype, "getOnDate", null);
+__decorate([
+    tsoa_1.Get('/getPriority/{userId}'),
+    __param(0, tsoa_1.Query()), __param(1, tsoa_1.Query())
+], TaskController.prototype, "getByPriority", null);
+__decorate([
+    tsoa_1.Get('/getStatus/{userId}'),
+    __param(0, tsoa_1.Query()), __param(1, tsoa_1.Query())
 ], TaskController.prototype, "getByStatus", null);
 __decorate([
     tsoa_1.Post(),

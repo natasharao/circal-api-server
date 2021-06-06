@@ -86,23 +86,25 @@ const models = {
         "dataType": "refObject",
         "properties": {
             "_id": { "dataType": "string", "required": true },
+            "userId": { "dataType": "string", "required": true },
             "taskName": { "dataType": "string", "required": true },
             "dueDate": { "dataType": "datetime", "required": true },
+            "priority": { "dataType": "string", "required": true },
             "completionStatus": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },
-    "Pick_Task.taskName-or-dueDate-or-completionStatus_": {
+    "Pick_Task.taskName-or-userId-or-dueDate-or-priority-or-completionStatus_": {
         "dataType": "refAlias",
-        "type": { "dataType": "nestedObjectLiteral", "nestedProperties": { "taskName": { "dataType": "string", "required": true }, "dueDate": { "dataType": "datetime", "required": true }, "completionStatus": { "dataType": "string", "required": true } }, "validators": {} },
+        "type": { "dataType": "nestedObjectLiteral", "nestedProperties": { "taskName": { "dataType": "string", "required": true }, "userId": { "dataType": "string", "required": true }, "dueDate": { "dataType": "datetime", "required": true }, "priority": { "dataType": "string", "required": true }, "completionStatus": { "dataType": "string", "required": true } }, "validators": {} },
     },
     "TaskCreationRequest": {
         "dataType": "refAlias",
-        "type": { "ref": "Pick_Task.taskName-or-dueDate-or-completionStatus_", "validators": {} },
+        "type": { "ref": "Pick_Task.taskName-or-userId-or-dueDate-or-priority-or-completionStatus_", "validators": {} },
     },
     "TaskUpdateRequest": {
         "dataType": "refAlias",
-        "type": { "ref": "Pick_Task.taskName-or-dueDate-or-completionStatus_", "validators": {} },
+        "type": { "ref": "Pick_Task.taskName-or-userId-or-dueDate-or-priority-or-completionStatus_", "validators": {} },
     },
     "UserAccountLinks": {
         "dataType": "refObject",
@@ -129,21 +131,20 @@ const models = {
             "cal_keys": { "dataType": "array", "array": { "dataType": "array", "array": { "dataType": "string" } }, "required": true },
             "calendar": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
             "accountLinks": { "dataType": "array", "array": { "ref": "UserAccountLinks" }, "required": true },
-            "tasks": { "dataType": "array", "array": { "ref": "Task" }, "required": true },
         },
         "additionalProperties": false,
     },
-    "Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar-or-tasks_": {
+    "Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_": {
         "dataType": "refAlias",
-        "type": { "dataType": "nestedObjectLiteral", "nestedProperties": { "role": { "dataType": "string", "required": true }, "firstName": { "dataType": "string", "required": true }, "lastName": { "dataType": "string", "required": true }, "email": { "dataType": "string", "required": true }, "companyId": { "dataType": "string", "required": true }, "status": { "dataType": "string", "required": true }, "calendar": { "dataType": "array", "array": { "dataType": "string" }, "required": true }, "tasks": { "dataType": "array", "array": { "ref": "Task" }, "required": true } }, "validators": {} },
+        "type": { "dataType": "nestedObjectLiteral", "nestedProperties": { "role": { "dataType": "string", "required": true }, "firstName": { "dataType": "string", "required": true }, "lastName": { "dataType": "string", "required": true }, "email": { "dataType": "string", "required": true }, "companyId": { "dataType": "string", "required": true }, "status": { "dataType": "string", "required": true }, "calendar": { "dataType": "array", "array": { "dataType": "string" }, "required": true } }, "validators": {} },
     },
     "UserCreationRequest": {
         "dataType": "refAlias",
-        "type": { "ref": "Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar-or-tasks_", "validators": {} },
+        "type": { "ref": "Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_", "validators": {} },
     },
     "UserUpdateRequest": {
         "dataType": "refAlias",
-        "type": { "ref": "Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar-or-tasks_", "validators": {} },
+        "type": { "ref": "Pick_User.role-or-firstName-or-lastName-or-email-or-companyId-or-status-or-calendar_", "validators": {} },
     },
     "Pick_UserAccountLinks.accountType-or-token_": {
         "dataType": "refAlias",
@@ -397,9 +398,42 @@ function RegisterRoutes(app) {
         const promise = controller.getAll.apply(controller, validatedArgs);
         promiseHandler(controller, promise, response, next);
     });
-    app.get('/task/get/:completionStatus', function (request, response, next) {
+    app.get('/task/getOnDate/:userId', function (request, response, next) {
+        const args = {
+            dueDate: { "in": "query", "name": "dueDate", "required": true, "dataType": "datetime" },
+            userId: { "in": "query", "name": "userId", "required": true, "dataType": "string" },
+        };
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+        }
+        catch (err) {
+            return next(err);
+        }
+        const controller = new task_controller_1.TaskController();
+        const promise = controller.getOnDate.apply(controller, validatedArgs);
+        promiseHandler(controller, promise, response, next);
+    });
+    app.get('/task/getPriority/:userId', function (request, response, next) {
+        const args = {
+            userId: { "in": "query", "name": "userId", "required": true, "dataType": "string" },
+            priority: { "in": "query", "name": "priority", "required": true, "dataType": "string" },
+        };
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+        }
+        catch (err) {
+            return next(err);
+        }
+        const controller = new task_controller_1.TaskController();
+        const promise = controller.getByPriority.apply(controller, validatedArgs);
+        promiseHandler(controller, promise, response, next);
+    });
+    app.get('/task/getStatus/:userId', function (request, response, next) {
         const args = {
             completionStatus: { "in": "query", "name": "completionStatus", "required": true, "dataType": "string" },
+            userId: { "in": "query", "name": "userId", "required": true, "dataType": "string" },
         };
         let validatedArgs = [];
         try {

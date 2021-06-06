@@ -1,7 +1,7 @@
 import { User } from '../database/dbobjects';
 import { Controller } from 'tsoa';
-export declare type UserCreationRequest = Pick<User, "role" | "firstName" | "lastName" | "email" | "companyId" | "status" | "calendar" | "tasks">;
-export declare type UserUpdateRequest = Pick<User, "role" | "firstName" | "lastName" | "email" | "companyId" | "status" | "calendar" | "tasks">;
+export declare type UserCreationRequest = Pick<User, "role" | "firstName" | "lastName" | "email" | "companyId" | "status" | "calendar">;
+export declare type UserUpdateRequest = Pick<User, "role" | "firstName" | "lastName" | "email" | "companyId" | "status" | "calendar">;
 export declare class UserController extends Controller {
     getAll(): Promise<User[]>;
     getById(id: string): Promise<User>;
