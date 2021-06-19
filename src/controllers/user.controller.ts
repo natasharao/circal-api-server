@@ -1,8 +1,8 @@
 import { UserModel, User, Meeting, MeetingModel } from '../database/dbobjects';
 import { Controller, Route, Get, Post, Body, Put, Delete } from 'tsoa';
 
-export type UserCreationRequest = Pick<User, "role" | "firstName" | "lastName" | "email" | "companyId" | "status" | "calendar">;
-export type UserUpdateRequest = Pick<User, "role" | "firstName" | "lastName" | "email" | "companyId" | "status" | "calendar">;
+export type UserCreationRequest = Pick<User, "role" | "firstName" | "lastName" | "email" | "companyId" | "status">;
+export type UserUpdateRequest = Pick<User, "role" | "firstName" | "lastName" | "email" | "companyId" | "status">;
 
 @Route('/user')
 export class UserController extends Controller {
@@ -10,11 +10,11 @@ export class UserController extends Controller {
 	public async getAll(): Promise<User[]> {
 		return new Promise<User[]> ( async (resolve, reject) => {
 			try {
-				let itemsFound: any = await UserModel.find({});
-                let items: User[] = itemsFound.map((item : any) => { return {_id: item._id, role: item.role, firstName: item.firstName, 
-                                                                    lastName: item.lastName, username: item.username, email: item.email, 
-                                                                    companyId: item.companyId, status: item.status, calendar: item.calendar}});
-				resolve(items);
+				let usersFound: any = await UserModel.find({});
+                let users: User[] = usersFound.map((user : any) => { return {_id: user._id, role: user.role, firstName: user.firstName, 
+                                                                    lastName: user.lastName, username: user.username, email: user.email, 
+                                                                    companyId: user.companyId, status: user.status}});
+				resolve(users);
 			} catch (err) {
 				this.setStatus(500);
 				reject(err);
@@ -25,8 +25,8 @@ export class UserController extends Controller {
 	@Get('/get/{id}')
 	public async getById(id: string): Promise<User> {
 		return new Promise<User> ( async (resolve,reject) => {
-			let itemsFound: any = await UserModel.findById(id);
-			resolve(itemsFound);
+			let userFound: any = await UserModel.findById(id);
+			resolve(userFound);
 		});
     }
     
@@ -34,14 +34,14 @@ export class UserController extends Controller {
     @Post()
 	public async create(@Body() createRequest: UserCreationRequest) : Promise<User> {
 		return new Promise<User> ( async (resolve, reject) => {
-			const item = new UserModel(createRequest);
+			const user = new UserModel(createRequest);
 			//another way to save and check for errors while saving
-		    await item.save(undefined, (err: any, item: any) => {
-				if (item) {
-                    let savedItem: any = {_id: item._id, role: item.role, firstName: item.firstName, 
-                                    lastName: item.lastName, username: item.username, email: item.email, 
-                                    companyId: item.companyId, status: item.status, calendar: item.calendar};
-					resolve(savedItem);
+		    await user.save(undefined, (err: any, user: any) => {
+				if (user) {
+                    let savedUser: any = {_id: user._id, role: user.role, firstName: user.firstName, 
+                                    lastName: user.lastName, username: user.username, email: user.email, 
+                                    companyId: user.companyId, status: user.status};
+					resolve(savedUser);
 				} else {
 					reject({});
 				}

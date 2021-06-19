@@ -17,18 +17,14 @@ interface License {
 
 interface User {
     _id: string;
-    role: string; //basic, admin
-    username: string;
+    role: string; //basic, company-owner
     firstName: string;
     lastName: string;
-    passwordHash: string;
     email: string;
+    passwordHash: string;
     profileURL: string;
     companyId: string;
     status: string; // invited, active, inactive
-    cal_keys: string[][];
-    calendar: string[]; /** should be array of strings -- see if any issues**/
-    accountLinks: UserAccountLinks[]
 }
 
 interface Task {
@@ -48,8 +44,6 @@ interface Meeting {
     preMeetingAgenda: string;
     attendingUsers: string[]; /** should be array of strings -- see if any issues**/
     recurring: boolean;
-    done: boolean;
-    cancelled: boolean;
     status: string; // upcoming, inprog, done, cancelled
 }
 
@@ -92,9 +86,7 @@ const MeetingSchema = new mongoose.Schema({
     endTime: Date,
     preMeetingAgenda: String,
     attendingUsers: {type: [String], index: true },
-    recurring: Boolean,
-    done: Boolean,
-    cancelled: Boolean
+    recurring: Boolean
 });
 
 const UserSchema = new mongoose.Schema({
@@ -105,10 +97,7 @@ const UserSchema = new mongoose.Schema({
     passwordHash: { type: String, index: true },
     email:  { type: String, index: true },
     companyId: String,
-    status:  { type: String, index: true, enumValues: ['invited','active','inactive'] }, 
-    cal_keys: {type: [[String]], index: true},
-    calendar: { type: [String], index: true },
-    accountLinks: [UserAccountLinksSchema],
+    status:  { type: String, index: true, enumValues: ['invited','active','inactive'] }
 });
 
 
